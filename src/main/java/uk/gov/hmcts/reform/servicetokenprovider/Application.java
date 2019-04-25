@@ -1,5 +1,6 @@
 package uk.gov.hmcts.reform.servicetokenprovider;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -20,11 +21,15 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
         "uk.gov.hmcts.reform.authorisation",
         "uk.gov.hmcts.reform.servicetokenprovider",
     })
+@Slf4j
 @SuppressWarnings("HideUtilityClassConstructor") // Spring needs a constructor, its not a utility class
 public class Application {
 
     @Value("${idam.s2s-auth.totp_secret}")
     private String secret;
+
+    @Value("${idam.s2s-auth.microservice}")
+    private String microservice;
 
     @Autowired
     private ServiceAuthorisationApi serviceAuthorisationApi;
@@ -35,6 +40,7 @@ public class Application {
 
     @Bean
     public AuthTokenGenerator authTokenGenerator() {
-        return new ServiceAuthTokenGenerator(secret, "iac", serviceAuthorisationApi);
+        log.info(String.format("Creating token generator with secret {} and microservice {}", secret, microservice));
+        return new ServiceAuthTokenGenerator(secret, microservice, serviceAuthorisationApi);
     }
 }

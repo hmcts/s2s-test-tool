@@ -12,6 +12,7 @@ plugins {
 apply plugin: 'java'
 
 def versions = [
+    lombok          : '1.18.6',
     serenity        : '2.0.11',
     springBoot      : '2.0.4.RELEASE',
     springHystrix   : '2.0.2.RELEASE',
@@ -78,6 +79,10 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.21.0'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
 
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    testCompileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
+    testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
 }
 
 gradle.startParameter.continueOnFailure = true
